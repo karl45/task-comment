@@ -1,7 +1,6 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { AuthorsService } from './authors.service';
 import { JwtService } from '@nestjs/jwt';
-import { access } from 'fs';
 
 @Controller('authors')
 export class AuthorsController {
@@ -25,7 +24,5 @@ export class AuthorsController {
   @Post('logout')
   async logout() {
     localStorage.removeItem('access_token');
-    // или если в cookie:
-    document.cookie = 'jwt=; Max-Age=0; path=/;';
   }
 }

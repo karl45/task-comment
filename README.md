@@ -29,6 +29,9 @@
 
 ```bash
 $ npm install
+
+After npm install please run
+$ npx ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:run -d src/config/ormconfig.ts
 ```
 
 ## Compile and run the project
@@ -56,6 +59,8 @@ $ npm run test:e2e
 # test coverage
 $ npm run test:cov
 ```
+
+
 
 ## Deployment
 
