@@ -8,7 +8,7 @@ import { Author } from './entities/author.entity';
 @Module({
   imports: [
     JwtModule.register({
-      secret: 'user_id',
+      secret: 'author_id',
       signOptions: { expiresIn: '1h' },
     }),
     TypeOrmModule.forFeature([Author]),

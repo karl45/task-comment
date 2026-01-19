@@ -11,7 +11,7 @@ export class CommentsController {
   @UseGuards(JwtAuthGuard)
   @Post()
   create(@Request() request, @Body() comment: CreateComment) {
-    const authorId = request.author.id;
+    const authorId = request.user.id;
     return this.commentsService.create(comment, authorId);
   }
 
