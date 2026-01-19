@@ -30,8 +30,11 @@
 ```bash
 $ npm install
 
+Please create database by hand because it cannot create by migration!!!!!!
+
 After npm install please run
 $ npx ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:run -d src/config/ormconfig.ts
+
 ```
 
 ## Compile and run the project
