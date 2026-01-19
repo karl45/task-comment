@@ -34,7 +34,7 @@ export class CommentsService {
     });
     this.commentRepo.create(comment);
 
-    return await this.commentRepo.save(comment); // ✅ save to DB and return
+    return await this.commentRepo.save(comment); 
   }
 
   async getByTaskId(task_id: string) {
