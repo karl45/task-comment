@@ -32,15 +32,17 @@ export class CommentsService {
       author,
       task,
     });
-    this.commentRepo.create(comment);
 
-    return await this.commentRepo.save(comment); 
+    return await this.commentRepo.save(comment);
   }
 
   async getByTaskId(task_id: string) {
-    const task = await this.tasksRepo.findOneBy({ id: task_id });
+    const task = await this.tasksRepo.findOne({
+      where: { id: task_id },
+      relations: ['comments'],
+    });
     if (!task) throw new NotFoundException('Author not found');
-    return this.commentRepo.find({ where: { task: task } });
+    return task.comments;
   }
 
   getById(id: string) {
@@ -48,14 +50,16 @@ export class CommentsService {
   }
 
   async updateById(id: string, comment: UpdateComment) {
-    const oldComment = this.commentRepo.findOneBy({ id: id });
+    const oldComment = await this.commentRepo.findOneBy({ id: id });
 
     if (!oldComment) {
       throw new NotFoundException(`Comment with id ${id} not found`);
     }
 
+
+
     Object.assign(oldComment, comment);
-    return this.commentRepo.save(comment);
+    return this.commentRepo.save(oldComment);
   }
 
   async deleteById(id: string) {

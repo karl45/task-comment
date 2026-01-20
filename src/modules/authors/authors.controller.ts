@@ -1,6 +1,7 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { AuthorsService } from './authors.service';
 import { JwtService } from '@nestjs/jwt';
+import { Authorize } from './dto/authorize.dto';
   
 @Controller('authors')
 export class AuthorsController {
@@ -10,7 +11,7 @@ export class AuthorsController {
   ) {}
 
   @Post()
-  async loginbyAuthor(@Body() authorize: { login: string; password: string }) {
+  async loginbyAuthor(@Body() authorize: Authorize) {
     const author = await this.authorsService.getAuthor(authorize);
     if (!author) {
       return { message: 'Invalid login or password' };

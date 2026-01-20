@@ -16,19 +16,14 @@ export class AuthorsService {
     password: string;
   }): Promise<Author | null> {
     const author = await this.authorRepo.findOneBy({ login: authorize.login });
-  console.log(authorize.login);
-  console.log(authorize.password);
     if (!author) return null;
-  console.log(authorize.login);
-  console.log(authorize.password);
-    // console.log(password);
     const checkPassword = await bcrypt.compare(
       authorize.password,
       author.password,
     );
 
     if (!checkPassword) return null;
-    
+
     return author;
   }
 }

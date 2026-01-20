@@ -1,8 +1,9 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards,Request  } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards,Request, Query  } from '@nestjs/common';
 import { CommentsService } from './comments.service';
 import { CreateComment } from './dto/create-comment.dto';
 import { UpdateComment } from './dto/update-comment.dto';
 import { JwtAuthGuard } from './auth/JwtAuthGuard';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
 @Controller('comments')
 export class CommentsController {
@@ -10,13 +11,14 @@ export class CommentsController {
 
   @UseGuards(JwtAuthGuard)
   @Post()
+  @ApiBearerAuth('bearer')
   create(@Request() request, @Body() comment: CreateComment) {
     const authorId = request.user.id;
     return this.commentsService.create(comment, authorId);
   }
 
-  @Get(':task_id')
-  getByTaskId(@Param('task_id') task_id: string) {
+  @Get()
+  getByTaskId(@Query('task_id') task_id: string) {
     return this.commentsService.getByTaskId(task_id);
   }
 
