@@ -1,4 +1,15 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards,Request, Query  } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+  UseGuards,
+  Request,
+  Query,
+} from '@nestjs/common';
 import { CommentsService } from './comments.service';
 import { CreateComment } from './dto/create-comment.dto';
 import { UpdateComment } from './dto/update-comment.dto';
@@ -27,13 +38,18 @@ export class CommentsController {
     return this.commentsService.getById(id);
   }
 
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('bearer')
   @Patch(':id')
-  async updateCommentById(@Param('id') id: string, @Body() comment: UpdateComment) {
+  async updateCommentById(
+    @Param('id') id: string,
+    @Body() comment: UpdateComment,
+  ) {
     return this.commentsService.updateById(id, comment);
   }
 
   @Delete(':id')
-  async deleteCommentById(@Param('id') id:string){
+  async deleteCommentById(@Param('id') id: string) {
     return this.commentsService.deleteById(id);
   }
 }
