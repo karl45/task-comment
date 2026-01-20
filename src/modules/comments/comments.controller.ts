@@ -50,8 +50,11 @@ export class CommentsController {
     return this.commentsService.updateById(id, authorId, comment);
   }
 
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('bearer')
   @Delete(':id')
-  async deleteCommentById(@Param('id') id: string) {
-    return this.commentsService.deleteById(id);
+  async deleteCommentById(@Request() request, @Param('id') id: string) {
+    const authorId = request.user.id;
+    return this.commentsService.deleteById(id, authorId);
   }
 }

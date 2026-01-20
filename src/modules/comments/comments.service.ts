@@ -1,4 +1,8 @@
-import { Injectable, MethodNotAllowedException, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  MethodNotAllowedException,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Comment } from './entities/comment.entity';
 import { Repository } from 'typeorm';
@@ -54,20 +58,35 @@ export class CommentsService {
     return this.commentRepo.findOneBy({ id: id });
   }
 
-  async updateById(id: string, authorId:string, comment: UpdateComment) {
-    const oldComment = await this.commentRepo.findOne({where: { id: id }, relations:['author']});
+  async updateById(id: string, authorId: string, comment: UpdateComment) {
+    const oldComment = await this.commentRepo.findOne({
+      where: { id: id },
+      relations: ['author'],
+    });
     if (!oldComment) {
       throw new NotFoundException(`Comment with id ${id} not found`);
     }
 
-    if(oldComment.author.id !== authorId)
-      throw new MethodNotAllowedException(`You are can't edit this comment`)
+    if (oldComment.author.id !== authorId)
+      throw new MethodNotAllowedException(`You are can't edit this comment`);
 
     Object.assign(oldComment, comment);
     return this.commentRepo.save(oldComment);
   }
 
-  async deleteById(id: string) {
+  async deleteById(id: string, authorId: string) {
+    const сomment = await this.commentRepo.findOne({
+      where: { id: id },
+      relations: ['author'],
+    });
+
+    if (!сomment) {
+      throw new NotFoundException(`Comment with id ${id} not found`);
+    }
+
+    if (сomment.author.id !== authorId)
+      throw new MethodNotAllowedException(`You are can't delete this comment`);
+
     await this.commentRepo.delete({ id: id });
     return { message: `Comment with id ${id} succesfully deletd` };
   }
