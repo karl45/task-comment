@@ -42,10 +42,12 @@ export class CommentsController {
   @ApiBearerAuth('bearer')
   @Patch(':id')
   async updateCommentById(
+    @Request() request,
     @Param('id') id: string,
     @Body() comment: UpdateComment,
   ) {
-    return this.commentsService.updateById(id, comment);
+    const authorId = request.user.id;
+    return this.commentsService.updateById(id, authorId, comment);
   }
 
   @Delete(':id')
